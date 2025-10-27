@@ -47,7 +47,7 @@ pipeline {
         }
         stage('Build app'){
             steps {
-                sh "mvn clean install -DskipTests"
+                sh "mvn clean install -DskipTests=true"
             }
         }
         stage('docker build and push'){
@@ -63,6 +63,24 @@ pipeline {
         echo "Docker stage failed: ${err}"
     }
 
+                }
+            }
+        }
+    }
+}
+
+//CD_PIPELINE_JENKINSFILE
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Docker Deploy to Container') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'a51a2369-0ad3-48a4-b338-ae4ee9f4e889', toolName: 'Docker') {
+                        sh 'docker run -d --name shopping-cart -p 8070:8070 faiz792/shopping:latest'
+                    }
                 }
             }
         }

@@ -47,7 +47,7 @@ pipeline {
         }
         stage('Build app'){
             steps {
-                sh "mvn clean install -DskipTests"
+                sh "mvn clean install -DskipTests=true"
             }
         }
         stage('docker build and push'){
